@@ -1,6 +1,6 @@
-# copy--include-directive README
+# copy--include README
 
-This is the README for your extension "copy--include-directive". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "copy--include". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 

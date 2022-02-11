@@ -25,7 +25,7 @@ function copyIncludeDirective(selected: vscode.Uri): void {
 export function activate(context: vscode.ExtensionContext) {
 	// current opened file in the opened editor
 	let disposable = vscode.commands.registerCommand(
-		'copy--include-directive.currentFile', copyIncludeDirective);
+		'copy--include.currentFile', copyIncludeDirective);
 
 	context.subscriptions.push(disposable);
 }

@@ -1,6 +1,6 @@
 {
-	"name": "copy--include-directive",
-	"displayName": "Copy #include Directive",
+	"name": "copy--include",
+	"displayName": "Copy #include",
 	"description": "Copy #include directive of the header file. ",
 	"version": "0.0.1",
 	"engines": {
@@ -10,14 +10,14 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:copy--include-directive.currentFile"
+		"onCommand:copy--include.currentFile"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "copy--include-directive.currentFile",
-				"title": "Copy #include directive: Current opened file"
+				"command": "copy--include.currentFile",
+				"title": "Copy #include: Current opened file"
 			}
 		]
 	},
