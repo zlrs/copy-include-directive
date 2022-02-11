@@ -7,6 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/zlrs/copy-include-directive.git"
 	},
+	"publisher": "KarlZhu",
 	"engines": {
 		"vscode": "^1.60.0"
 	},
