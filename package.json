@@ -1,6 +1,6 @@
 {
 	"name": "copy--include",
-	"displayName": "Copy #include",
+	"displayName": "Copy C/C++ #include",
 	"description": "Copy #include directive of the header file. ",
 	"version": "0.0.1",
 	"repository": {
