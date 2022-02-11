@@ -2,7 +2,7 @@
 	"name": "copy--include",
 	"displayName": "Copy C/C++ #include",
 	"description": "Copy #include directive of the header file. ",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/zlrs/copy-include-directive.git"
