@@ -15,8 +15,9 @@ export class IncludePathStore implements vscode.Disposable {
 
   private constructor() {
     if (this.pref.isReferToCCppPropertiesJSON) {
-      this.watcher = vscode.workspace.createFileSystemWatcher(".vscode/c_cpp_properties.json");
+      this.watcher = vscode.workspace.createFileSystemWatcher("**/c_cpp_properties.json");
       const listener = (e: vscode.Uri) => {
+        console.log('c_cpp_properties.json changed');
         const workspaceFolder = vscode.workspace.getWorkspaceFolder(e);
         if (workspaceFolder) { this.updateIncludePath(workspaceFolder); }
       };
@@ -53,10 +54,11 @@ export class IncludePathStore implements vscode.Disposable {
       includePath = replaceVariable(this.pref.headerSearchPath, workspaceFolder);
     }
     else {
-      const filename = join(workspaceFolder.uri.path, ".vscode/c_cpp_properties.json");
+      const filename = join(workspaceFolder.uri.fsPath, ".vscode/c_cpp_properties.json");
       let properties: any = undefined;
-
-      if (await exists(filename)) {
+      
+      const fileExists = await exists(filename);
+      if (fileExists) {
         try {
           properties = JSON.parse(await readFile(filename, "utf-8"));
         } catch (err) { }
@@ -67,9 +69,6 @@ export class IncludePathStore implements vscode.Disposable {
 
       const platform = getPlatform();
       let config = properties.configurations.find((c: { name: string; }) => c.name === platform);
-      if (typeof config === "undefined") {
-        config = properties.configurations;
-      }
       if (typeof config === "undefined") {
         return;
       }
@@ -108,8 +107,8 @@ function replaceVariable(dirs: Array<string>, workspaceFolder: vscode.WorkspaceF
   }
 
   return dirs.map(dir => {
-    return dir.replace("${workspaceRoot}", workspaceFolder.uri.path)
-      .replace("${workspaceFolder}", workspaceFolder.uri.path)
+    return dir.replace("${workspaceRoot}", workspaceFolder.uri.fsPath)
+      .replace("${workspaceFolder}", workspaceFolder.uri.fsPath)
       .replace("/**", "")
       .replace("\\**", "");
   });

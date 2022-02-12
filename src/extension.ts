@@ -8,7 +8,7 @@ import { IncludePathStore } from './IncludePathStore';
 
 function calculateIncludeDirective(fileUri: vscode.Uri): string | null {
 	const workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
-	console.log('calculating #include: file: ', fileUri.path);
+	console.log('calculating #include: file: ', fileUri.fsPath);
 	if (!workspaceFolder) {
 		return null;
 	} 
@@ -23,7 +23,7 @@ function calculateIncludeDirective(fileUri: vscode.Uri): string | null {
 	let includePath: string | null = null;
 	for (const path of searchPaths) {
 		let from = new ComparablePath(path);
-		let to = new ComparablePath(fileUri.path);
+		let to = new ComparablePath(fileUri.fsPath);
 		includePath = ComparablePath.relative(from, to);
 		if (includePath) {
 			break;
@@ -66,7 +66,7 @@ let statusBarItem: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('activated!');
-	IncludePathStore.shared;
+	context.subscriptions.push(IncludePathStore.shared);
 
 	const cmdIDCurrentFile = 'copy--include.currentFile';
 	const cmdIDSelectedFileInExplorer = 'copy--include.selectedFileInExplorer';
