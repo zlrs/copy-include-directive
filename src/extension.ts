@@ -3,25 +3,10 @@
 import * as vscode from 'vscode';
 import * as ncp from "copy-paste";
 import { ComparablePath } from './ComparablePath';
-
-class Config {
-	config: vscode.WorkspaceConfiguration;
-	constructor() {
-		this.config = vscode.workspace.getConfiguration('copyInclude');
-	}
-
-	get isShowStatusBar(): boolean {
-		return this.config.get<boolean>('accessPoint.statusBar') as boolean;
-	}
-
-	get headerSearchPath(): Array<string> {
-		let searchPath = this.config.get<string>('headerSearchPath.path') as string;
-		return searchPath.length === 0 ? [] : searchPath.split(':');
-	}
-}
+import { Preference } from './Preference';
 
 function calculateIncludeDirective(fileUri: vscode.Uri): string | null {
-	let searchPaths: Array<string> = new Config().headerSearchPath;
+	let searchPaths: Array<string> = new Preference().headerSearchPath;
 	if (searchPaths.length === 0) {
 		let workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
 		if (workspaceFolder) {
@@ -46,6 +31,10 @@ function calculateIncludeDirective(fileUri: vscode.Uri): string | null {
 }
 
 function copySelectedFileIncludeDirective(selected: vscode.Uri): void {
+	if (!selected) {
+		return;
+	}
+	
 	let includeDirective = calculateIncludeDirective(selected);
 	console.log(includeDirective);
 	if (includeDirective) {
@@ -82,7 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand(cmdIDSelectedFileInExplorer, copySelectedFileIncludeDirective)
 	);
 
-	if (new Config().isShowStatusBar) {
+	if (new Preference().isShowStatusBar) {
 		statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
 		statusBarItem.command = cmdIDCurrentFile;
 		statusBarItem.text = 'Copy #include';
