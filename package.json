@@ -2,7 +2,7 @@
 	"name": "copy--include",
 	"displayName": "Copy #include",
 	"description": "Copy #include directive of the header file. ",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/zlrs/copy-include-directive.git"
@@ -15,16 +15,23 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:copy--include.currentFile"
+		"onCommand:copy--include.currentFile",
+		"onCommand:copy--include.selectedFileInExplorer"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
-			{
-				"command": "copy--include.currentFile",
-				"title": "Copy #include: Current opened file"
-			}
-		]
+		"commands": [{
+			"command": "copy--include.currentFile",
+			"title": "Copy #include: current file"
+		},{
+			"command": "copy--include.selectedFileInExplorer",
+			"title": "Copy #include: selected file in expolrer"
+		}],
+		"menus": {
+			"explorer/context": [{
+				"command": "copy--include.selectedFileInExplorer"
+			}]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

@@ -9,7 +9,16 @@ function getProjectIncludeDirective(fileUri: vscode.Uri): string | null {
   return includeDirective;
 }
 
-function copyIncludeDirective(selected: vscode.Uri): void {	
+function copySelectedFileIncludeDirective(selected: vscode.Uri): void {
+	console.log(selected);
+	let includeDirective = getProjectIncludeDirective(selected);
+	console.log(includeDirective);
+	if (includeDirective) {
+		ncp.copy<string>(includeDirective);
+	}
+}
+
+function copyCurrentFileIncludeDirective(): void {	
 	const editor = vscode.window.activeTextEditor;
 	if (!editor) {
 		return;
@@ -23,11 +32,16 @@ function copyIncludeDirective(selected: vscode.Uri): void {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	// current opened file in the opened editor
+	// copy the #include directive of the current file in the editor
 	let disposable = vscode.commands.registerCommand(
-		'copy--include.currentFile', copyIncludeDirective);
+		'copy--include.currentFile', copyCurrentFileIncludeDirective);
+	
+	// copy the #include directive of the selected file in the explorer
+	let disposable2 = vscode.commands.registerCommand(
+		'copy--include.selectedFileInExplorer', copySelectedFileIncludeDirective);
 
 	context.subscriptions.push(disposable);
-}
+	context.subscriptions.push(disposable2);
+	}
 
 export function deactivate() {}
