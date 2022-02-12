@@ -2,7 +2,7 @@
 	"name": "copy--include",
 	"displayName": "Copy #include",
 	"description": "Copy #include directive of the header file. ",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/zlrs/copy-include-directive.git"
@@ -41,7 +41,7 @@
 			"properties": {
 				"copyInclude.headerSearchPath.path": {
 					"type":"string",
-					"default":"",
+					"default":"${workspaceFolder}",
 					"description": "The absolute header search path of the project, delimited by ':'. For example: /Users/macuser/some-project:/Users/macuser/some-project/include. Windows paths are also accepted. By default it's empty and the extension will fallback to ${WorkspaceFolder}."
 				},
 				"copyInclude.headerSearchPath.useCCppPropertiesJSON": {

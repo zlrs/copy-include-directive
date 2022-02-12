@@ -4,14 +4,20 @@ import * as vscode from 'vscode';
 import * as ncp from "copy-paste";
 import { ComparablePath } from './ComparablePath';
 import { Preference } from './Preference';
+import { IncludePathStore } from './IncludePathStore';
 
 function calculateIncludeDirective(fileUri: vscode.Uri): string | null {
-	let searchPaths: Array<string> = new Preference().headerSearchPath;
-	if (searchPaths.length === 0) {
-		let workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
-		if (workspaceFolder) {
-			searchPaths.push(workspaceFolder.uri.path);
-		}
+	const workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
+	console.log('calculating #include: file: ', fileUri.path);
+	if (!workspaceFolder) {
+		return null;
+	} 
+
+	let searchPaths: Array<string> | undefined = 
+	  IncludePathStore.shared.getIncludePathFor(workspaceFolder);
+	console.log('calculating #include: searchPaths:', searchPaths);
+	if (!searchPaths) {
+		return null;
 	}
 
 	let includePath: string | null = null;
@@ -24,10 +30,9 @@ function calculateIncludeDirective(fileUri: vscode.Uri): string | null {
 		}
 	}
 
-	if (includePath) {
-		return `#include "${includePath}"`;
-	}
-	return null;
+	const includeDirective = includePath ? `#include "${includePath}"` : null;
+	console.log('#include calculated: includeDirective: ', includeDirective);
+	return includeDirective;
 }
 
 function copySelectedFileIncludeDirective(selected: vscode.Uri): void {
@@ -36,10 +41,7 @@ function copySelectedFileIncludeDirective(selected: vscode.Uri): void {
 	}
 	
 	let includeDirective = calculateIncludeDirective(selected);
-	console.log(includeDirective);
-	if (includeDirective) {
-		ncp.copy<string>(includeDirective);
-	}
+	copyString(includeDirective);
 }
 
 function copyCurrentFileIncludeDirective(): void {	
@@ -50,16 +52,21 @@ function copyCurrentFileIncludeDirective(): void {
 
 	let currentFileUri = editor.document.uri;
 	let includeDirective = calculateIncludeDirective(currentFileUri);
-	console.log(includeDirective);
-	if (includeDirective) {
-		ncp.copy<string>(includeDirective);
+	copyString(includeDirective);
+}
+
+function copyString(str: string | null) {
+	if (str) {
+		ncp.copy<string>(str);
 	}
+	console.log('copied: ', str);
 }
 
 let statusBarItem: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('activated!');
+	IncludePathStore.shared;
 
 	const cmdIDCurrentFile = 'copy--include.currentFile';
 	const cmdIDSelectedFileInExplorer = 'copy--include.selectedFileInExplorer';
