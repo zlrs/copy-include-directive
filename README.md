@@ -16,14 +16,24 @@ For example if there is an image subfolder under your extension project workspac
 
 ## Extension Settings
 
-This extension doesn't require settings, for now.
+```json
+{
+  // show status bar item for active header file
+  "copyInclude.accessPoint.statusBar": true,
+  // include search path
+  "copyInclude.headerSearchPath.path": "",
+  // whether to refer to .vscode/c_cpp_properties.json for the include search path. 
+  // If it's on, `copyInclude.headerSearchPath.path` will be ignored.
+  "copyInclude.headerSearchPath.useCCppPropertiesJSON": false
+}
+```
 
 ## Release Notes
 
 ### 0.0.3
 
-1. Add a status bar item to copy #include of the current file.
-2. Support reading project include directories and calculate appropriate #include directive.
+1. Add a status bar item to copy #include of the current file. It's enabled by default for convenience and can be disabled in the preferences. 
+2. You can now specify project include directories in the preferences. Or, you can set the extension to refer to the `.vscode/c_cpp_properties.json` file. 
 
 ### 0.0.2
 
@@ -33,3 +43,6 @@ Add a context entry in the file explorer to copy #include of the selected file.
 
 Initial release. Support getting #include from current open file.
 
+## Known issues
+
+For now, the extension doesn't support replacing env varibales defined in `.vscode/c_cpp_properties.json`. But it's promising to come in next big version.
