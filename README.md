@@ -20,6 +20,15 @@ This extension doesn't require settings, for now.
 
 ## Release Notes
 
+### 0.0.3
+
+1. Add a status bar item to copy #include of the current file.
+2. Support reading project include directories and calculate appropriate #include directive.
+
+### 0.0.2
+
+Add a context entry in the file explorer to copy #include of the selected file.
+
 ### 0.0.1
 
 Initial release. Support getting #include from current open file.

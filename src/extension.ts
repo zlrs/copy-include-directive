@@ -2,8 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as ncp from "copy-paste";
+import { ComparablePath } from './ComparablePath';
 
-function getProjectIncludeDirective(fileUri: vscode.Uri): string | null {
 class Config {
 	config: vscode.WorkspaceConfiguration;
 	constructor() {
@@ -11,22 +11,42 @@ class Config {
 	}
 
 	get isShowStatusBar(): boolean {
-		return this.config.get('accessPoint.statusBar') as boolean;
+		return this.config.get<boolean>('accessPoint.statusBar') as boolean;
 	}
 
 	get headerSearchPath(): Array<string> {
-		return [];
+		let searchPath = this.config.get<string>('headerSearchPath.path') as string;
+		return searchPath.length === 0 ? [] : searchPath.split(':');
 	}
 }
 
-	let relativePath = vscode.workspace.asRelativePath(fileUri);
-  let includeDirective: string = `#include "${relativePath}"`;
-  return includeDirective;
+function calculateIncludeDirective(fileUri: vscode.Uri): string | null {
+	let searchPaths: Array<string> = new Config().headerSearchPath;
+	if (searchPaths.length === 0) {
+		let workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
+		if (workspaceFolder) {
+			searchPaths.push(workspaceFolder.uri.path);
+		}
+	}
+
+	let includePath: string | null = null;
+	for (const path of searchPaths) {
+		let from = new ComparablePath(path);
+		let to = new ComparablePath(fileUri.path);
+		includePath = ComparablePath.relative(from, to);
+		if (includePath) {
+			break;
+		}
+	}
+
+	if (includePath) {
+		return `#include "${includePath}"`;
+	}
+	return null;
 }
 
 function copySelectedFileIncludeDirective(selected: vscode.Uri): void {
-	console.log(selected);
-	let includeDirective = getProjectIncludeDirective(selected);
+	let includeDirective = calculateIncludeDirective(selected);
 	console.log(includeDirective);
 	if (includeDirective) {
 		ncp.copy<string>(includeDirective);
@@ -39,8 +59,9 @@ function copyCurrentFileIncludeDirective(): void {
 		return;
 	}
 
-	let fileUri = editor.document.uri;
-	let includeDirective = getProjectIncludeDirective(fileUri);
+	let currentFileUri = editor.document.uri;
+	let includeDirective = calculateIncludeDirective(currentFileUri);
+	console.log(includeDirective);
 	if (includeDirective) {
 		ncp.copy<string>(includeDirective);
 	}

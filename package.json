@@ -39,15 +39,15 @@
 			"id": "header search path",
 			"title": "Header search path",
 			"properties": {
-				"copyInclude.headerSearchPath": {
-					"type":"array",
-					"default": ["{$workspaceFolder}"],
-					"description": "The header search path of the project. Default is [\"${workspaceFolder}\"]."
+				"copyInclude.headerSearchPath.path": {
+					"type":"string",
+					"default":"",
+					"description": "The absolute header search path of the project, delimited by ':'. For example: /Users/macuser/some-project:/Users/macuser/some-project/include. Windows paths are also accepted. By default it's empty and the extension will fallback to ${WorkspaceFolder}."
 				},
-				"copyInclude.headerSearchPath.use CCppPropertiesJSON": {
+				"copyInclude.headerSearchPath.useCCppPropertiesJSON": {
 					"type": "boolean",
 					"default": false,
-					"description": "Use the header search path defined in .vscode/c_cpp_properies.json. If it's on, `copyInclude.headerSearchPath` will be ignored. "
+					"description": "Use the header search path defined in .vscode/c_cpp_properies.json. Note: If it's on, it'll be the only source of truth."
 				}
 			}
 		}],
@@ -56,7 +56,7 @@
 			"title": "Copy #include: current file"
 		},{
 			"command": "copy--include.selectedFileInExplorer",
-			"title": "Copy #include: selected file in expolrer"
+			"title": "Copy #include: selected file"
 		}],
 		"menus": {
 			"explorer/context": [{
