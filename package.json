@@ -15,11 +15,42 @@
 		"Other"
 	],
 	"activationEvents": [
+		"onLanguage:c",
+		"onLanguage:cpp",
+		"onLanguage:cuda-cpp",
+		"onLanguage:objective-c",
+		"onLanguage:objective-cpp",
 		"onCommand:copy--include.currentFile",
 		"onCommand:copy--include.selectedFileInExplorer"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"configuration": [{
+			"id": "access-point",
+			"title": "Access Point",
+			"properties": {
+				"copyInclude.accessPoint.statusBar": {
+					"type": "boolean",
+					"default": true,
+					"description": "Add a item to status bar for copying #include of the current file."
+				}
+			}
+		}, {
+			"id": "header search path",
+			"title": "Header search path",
+			"properties": {
+				"copyInclude.headerSearchPath": {
+					"type":"array",
+					"default": ["{$workspaceFolder}"],
+					"description": "The header search path of the project. Default is [\"${workspaceFolder}\"]."
+				},
+				"copyInclude.headerSearchPath.use CCppPropertiesJSON": {
+					"type": "boolean",
+					"default": false,
+					"description": "Use the header search path defined in .vscode/c_cpp_properies.json. If it's on, `copyInclude.headerSearchPath` will be ignored. "
+				}
+			}
+		}],
 		"commands": [{
 			"command": "copy--include.currentFile",
 			"title": "Copy #include: current file"
