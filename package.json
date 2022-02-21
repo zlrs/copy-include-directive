@@ -40,8 +40,8 @@
 			"title": "Header search path",
 			"properties": {
 				"copyInclude.headerSearchPath.path": {
-					"type":"string",
-					"default":"${workspaceFolder}",
+					"type": "string",
+					"default": "${workspaceFolder}",
 					"description": "The absolute header search path of the project, delimited by ':'. For example: /Users/macuser/some-project:/Users/macuser/some-project/include. Windows paths are also accepted. By default it's empty and the extension will fallback to ${WorkspaceFolder}."
 				},
 				"copyInclude.headerSearchPath.useCCppPropertiesJSON": {
@@ -53,8 +53,10 @@
 		}],
 		"commands": [{
 			"command": "copy--include.currentFile",
-			"title": "Copy #include: current file"
-		},{
+			"title": "Copy #include: current file",
+			"key": "ctrl+k l",
+			"mac": "cmd+k l"
+		}, {
 			"command": "copy--include.selectedFileInExplorer",
 			"title": "Copy #include: selected file"
 		}],
