@@ -4,7 +4,7 @@ export class ComparablePath {
 	private components: Array<string>;
 
 	constructor(_path: string) {
-		_path.replace('\\', '/');
+		_path = _path.replaceAll('\\', '/');
 		this.path = _path;
 		this.components = _path.split('/');
 	}
