@@ -38,6 +38,10 @@ The header search path is set to `${workspaceFolder}` out of box. You're free to
 
 ## Release Notes
 
+### 0.0.5
+
+Fix README.md picture path.
+
 ### 0.0.4
 
 1. Add keyboard shortcut: `ctrl+k l`.
