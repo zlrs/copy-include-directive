@@ -1,18 +1,26 @@
 # copy #include
 
-C/C++ developers mannuly write `#include` a lot. Although language server can help on auto-completion, it's still both boring and error-prone to typing the `#include "..."` again and agin.
+C/C++ developers write `#include` a lot. Though language servers can help, it's still boring and error-prone to typing it again and agin.
 
-This extension helps you get `#include` directive of the current open file. 
+This extension copys `#include` directive of the active file, or selected file in explorer. You can access the power from command palette, keyboard shortcut(`ctrl+k l`), status bar item, or explorer context menu. 
+
+The header search path is set to `${workspaceFolder}` out of box. You're free to customize it per project at any time.
 
 ## Features
+### Copy #include of active file, from command palette or status bar
+![get-include-from-command-palette](docs/call-from-command-palette-current-file-highlighted.png)
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Call from explorer context menu
+![call-from-explorer-context-menu](docs/call-from-explorer-context-menu.png)
 
-For example if there is an image subfolder under your extension project workspace:
-
-![get-include-from-command-palette](docs/call-from-command-palette-current-file.png)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### Specify header search path for different projects
+```json
+// .vscode/settings.json
+{
+  // Note: the order matters. Usually narrower paths are put ahead. 
+  "copyInclude.headerSearchPath.path": "${workspaceFolder}/include:${workspaceFolder}"
+}
+```
 
 ## Extension Settings
 
@@ -21,7 +29,7 @@ For example if there is an image subfolder under your extension project workspac
   // show status bar item for active header file
   "copyInclude.accessPoint.statusBar": true,
   // include search path
-  "copyInclude.headerSearchPath.path": "",
+  "copyInclude.headerSearchPath.path": "${workspaceFolder}/include:${workspaceFolder}",
   // whether to refer to .vscode/c_cpp_properties.json for the include search path. 
   // If it's on, `copyInclude.headerSearchPath.path` will be ignored.
   "copyInclude.headerSearchPath.useCCppPropertiesJSON": false
@@ -29,6 +37,11 @@ For example if there is an image subfolder under your extension project workspac
 ```
 
 ## Release Notes
+
+### 0.0.4
+
+1. Add keyboard shortcut: `ctrl+k l`.
+2. Fix path delimter replace error on Windows.
 
 ### 0.0.3
 
